@@ -357,7 +357,7 @@ function ddiu2_add_existing_user( $user_id, $ud, $mailinfo = false ) {
 
 	// Subjects
 	// The subject of emails to newly created accounts
-	$new_account_subject = 'Your Blogs@Baruch account has beeen created';
+	$new_account_subject = 'Your Blogs@Baruch account has been created';
 	// The subject of emails to existing members who've been added to the blog
 	$newly_added_subject = sprintf( 'You have been added to %s', $blog_name ); 
 	
