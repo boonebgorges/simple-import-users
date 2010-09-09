@@ -5,7 +5,7 @@ Tags: add, bulk, users, import, buddypress
 Requires at least: WordPress 3.0
 Tested up to: WordPress 3.0.1
 Stable tag: 1.0.1
-test
+
 Allows blog administrators to add multiple users to blogs at a time.
 
 == Description ==
