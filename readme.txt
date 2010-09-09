@@ -10,7 +10,7 @@ Allows blog administrators to add multiple users to blogs at a time.
 
 == Description ==
 
-Requires WordPress 3.0+ Network Mode
+Requires WordPress 3.0+ Network Mode.
 
 Allows blog administrators to add multiple users to blogs at a time, using only a list of email addresses. When the specified email address matches an existing account, the account will be added as a user on the blog. Otherwise a new account is created and the new user added with the specified role. Based on DDImportUsers.
 
