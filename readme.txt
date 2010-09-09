@@ -31,3 +31,8 @@ This plugin was developed for Blogs@Baruch of Baruch College's Bernard L Schwart
 
 = 0.1 =
 * Initial release
+
+= 0.1.1 =
+* Updated readme to reflect minimum requirements
+* Updated readme to contain proper instructions
+* Fixed typos
