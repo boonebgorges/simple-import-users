@@ -144,7 +144,7 @@ function ddiu2_management_page() {
 
 	<div class=wrap>
 
-	<h2>Import Users Deluxe 2!</h2>
+	<h2>Simple Import Users</h2>
 
 	<?php
 //		print_r($results);

@@ -6,9 +6,11 @@ Requires at least: WordPress 3.0
 Tested up to: WordPress 3.0.1
 Stable tag: 1.0
 
-Allows blog administrators to add multiple users to blogs at a time, using only a list of email addresses. When the specified email address matches an existing account, the account will be added as a user on the blog. Otherwise a new account is created and the new user added with the specified role. Based on DDImportUsers.
+Allows blog administrators to add multiple users to blogs at a time.
 
 == Description ==
+
+Requires WordPress 3.0+ Network Mode.
 
 Allows blog administrators to add multiple users to blogs at a time, using only a list of email addresses. When the specified email address matches an existing account, the account will be added as a user on the blog. Otherwise a new account is created and the new user added with the specified role. Based on DDImportUsers.
 
@@ -21,6 +23,7 @@ This plugin was developed for Blogs@Baruch of Baruch College's Bernard L Schwart
 == Installation ==
 
 * Install and activate the plugin through Dashboard > Plugins
+* Scroll through the plugin file simple-import-users.php. Near the end of the file you'll see the text of the "Welcome" emails. Change that text so it conforms to what you'd like your emails to say
 * Visit Dashboard > Tools > Import Users to import users
 
 
