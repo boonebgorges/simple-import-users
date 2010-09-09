@@ -29,10 +29,10 @@ This plugin was developed for Blogs@Baruch of Baruch College's Bernard L Schwart
 
 == Changelog ==
 
-= 0.1 =
+= 1.0 =
 * Initial release
 
-= 0.1.1 =
+= 1.0.1 =
 * Updated readme to reflect minimum requirements
 * Updated readme to contain proper instructions
 * Fixed typos
