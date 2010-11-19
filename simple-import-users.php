@@ -48,6 +48,9 @@ function ddiu2_management_page() {
 	$result = "";
 
 	if (isset($_POST['info_update'])) {
+	
+		
+	
 
 		?><div id="message" class="updated fade"><p><strong><?php
 
@@ -229,6 +232,30 @@ function ddiu2_management_page() {
 				}
 			}
 		}	
+	
+		$blog_name = get_bloginfo( 'name' );
+		$blog_url = site_url();
+		$admin_url = admin_url();
+		if ( !$email_defaults = get_option( 'ddui_email_defaults' ) ) {
+			$email_defaults = array(
+				'subject_new' => sprintf( 'Your account has been created on %s', $blog_name ),
+				'subject_existing' => sprintf( 'You have been added to %s', $blog_name ),
+				'content_new' => apply_filters( 'ddiu_bp_filter_email_content', sprintf( 'Your %s account has been created. Here is your login info:
+
+Username: [USERNAME]
+Password: [PASSWORD]
+
+', $blog_name ) ),
+				'content_added' => sprintf( 'You have been added as a user on the blog %s at %s. 
+
+Log into %s at %s', $blog_name, $blog_url, $blog_name, $admin_url )
+			
+			);		
+		}
+	
+		
+	
+	
 	?>
 	
 		
@@ -267,6 +294,21 @@ function ddiu2_management_page() {
 		?>
 		</select>
 		</div>
+		
+		<h3>Email content</h3>
+		
+		<p>You can edit the content of the email, but be sure to include the important bracketed information (like <strong>[USERNAME]</strong>), which will ensure that each member gets his or her personalized login information.</p>
+		
+		<label for="email-subject-existing">Subject (sent to <strong>new</strong> accounts)</label><br />
+		<input name="email-subject-existing" type="text" size="100" value="<?php echo $email_defaults['subject_existing'] ?>" /><br /><br />
+		<label for="email-subject-new">Subject (sent to <strong>existing</strong> accounts)</label><br />
+		<input name="email-subject-new" type="text" size="100" value="<?php echo $email_defaults['subject_new'] ?>" /><br /><br />
+		
+		
+		<label for="email-content-new">Content (sent to <strong>new</strong> accounts)</label><br />
+		<textarea name="email-content-new" cols="75" rows="6"><?php echo $email_defaults['content_new'] ?></textarea><br /><br />
+		<label for="email-content-all">Content (sent to <strong>all</strong> accounts)</label><br />
+		<textarea name="email-content-all" cols="75" rows="6"><?php echo $email_defaults['content_added'] ?></textarea><br /><br />
 	</div>
 
 
@@ -357,9 +399,11 @@ function ddiu2_add_existing_user( $user_id, $ud, $mailinfo = false ) {
 
 	// Subjects
 	// The subject of emails to newly created accounts
-	$new_account_subject = 'Your Blogs@Baruch account has been created';
+	//print_r($_POST); die();
+	
+	$new_account_subject = $_POST['email-subject-new'];
 	// The subject of emails to existing members who've been added to the blog
-	$newly_added_subject = sprintf( 'You have been added to %s', $blog_name ); 
+	$newly_added_subject = $_POST['email-subject-existing']; 
 	
 	$subject = ( $mailinfo ) ? $new_account_subject : $newly_added_subject;
 
@@ -369,23 +413,25 @@ function ddiu2_add_existing_user( $user_id, $ud, $mailinfo = false ) {
 	
 	// Newly created users get the following text at the top of their email
 	if ( $mailinfo ) {
-		$mail_message .= sprintf( 'Your Blogs@Baruch account has been created. Here is your login info:
-
-Username: %s
-Password: %s
-
-', $ud['username'], $ud['password'] );
+		$raw_mail_message = $_POST['email-content-new'];
+		
+		$search = array(
+			'[USERNAME]',
+			'[PASSWORD]'
+		);
+		
+		$replace = array(
+			$ud['username'],
+			$ud['password'],
+		);
+		
+		$mail_message .= str_replace( $search, $replace, $raw_mail_message );;
 
 		$mail_message = apply_filters( 'ddiu_bp_filter', $mail_message, $user_id );
-	
-	}
-	
-	
+	}	
 	
 	// Both existing and newly created users get the following
-	$newly_added_message = sprintf( 'You have been added as a user on the blog %s at %s. 
-
-Log into %s at %s', $blog_name, $blog_url, $blog_name, $blog_url . '/wp-admin' );
+	$newly_added_message = $_POST['email-content-all'];
 	
 	$mail_message .= $newly_added_message;
 
