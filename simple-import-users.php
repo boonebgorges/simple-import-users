@@ -48,9 +48,15 @@ function ddiu2_management_page() {
 	$result = "";
 
 	if (isset($_POST['info_update'])) {
-	
+		$new_defaults = array(
+			'subject_new' => $_POST['email-subject-new'],
+			'subject_existing' => $_POST['email-subject-existing'],
+			'content_new' => $_POST['email-content-new'],
+			'content_added' => $_POST['email-content-all']
+		);
 		
-	
+		update_option( 'ddui_email_defaults', $new_defaults );
+				
 
 		?><div id="message" class="updated fade"><p><strong><?php
 
@@ -299,10 +305,10 @@ Log into %s at %s', $blog_name, $blog_url, $blog_name, $admin_url )
 		
 		<p>You can edit the content of the email, but be sure to include the important bracketed information (like <strong>[USERNAME]</strong>), which will ensure that each member gets his or her personalized login information.</p>
 		
-		<label for="email-subject-existing">Subject (sent to <strong>new</strong> accounts)</label><br />
-		<input name="email-subject-existing" type="text" size="100" value="<?php echo $email_defaults['subject_existing'] ?>" /><br /><br />
-		<label for="email-subject-new">Subject (sent to <strong>existing</strong> accounts)</label><br />
+		<label for="email-subject-new">Subject (sent to <strong>new</strong> accounts)</label><br />
 		<input name="email-subject-new" type="text" size="100" value="<?php echo $email_defaults['subject_new'] ?>" /><br /><br />
+		<label for="email-subject-existing">Subject (sent to <strong>existing</strong> accounts)</label><br />
+		<input name="email-subject-existing" type="text" size="100" value="<?php echo $email_defaults['subject_existing'] ?>" /><br /><br />
 		
 		
 		<label for="email-content-new">Content (sent to <strong>new</strong> accounts)</label><br />
