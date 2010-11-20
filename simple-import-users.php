@@ -3,7 +3,7 @@
 Plugin Name: Simple Import Users
 Plugin URI: http://teleogistic.net/code/wordpress/simple-import-users
 Description: Allows blog administrators to add multiple users to blogs at a time, using only a list of email addresses. When the specified email address matches an existing account, the account will be added as a user on the blog. Otherwise a new account is created and the new user added with the specified role. Based on DDImportUsers.
-Version: 1.0.1
+Version: 1.1
 Requires at least: WordPress 3.0
 Tested up to: WordPress 3.0.1
 License: GPL v2

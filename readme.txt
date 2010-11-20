@@ -4,7 +4,7 @@ Donate link: http://teleogistic.net/donate
 Tags: add, bulk, users, import, buddypress
 Requires at least: WordPress 3.0
 Tested up to: WordPress 3.0.1
-Stable tag: 1.0.1
+Stable tag: 1.1
 
 Allows blog administrators to add multiple users to blogs at a time.
 
@@ -23,7 +23,6 @@ This plugin was developed for Blogs@Baruch of Baruch College's Bernard L Schwart
 == Installation ==
 
 * Install and activate the plugin through Dashboard > Plugins
-* Scroll through the plugin file simple-import-users.php. Near the end of the file you'll see the text of the "Welcome" emails. Change that text so it conforms to what you'd like your emails to say
 * Visit Dashboard > Tools > Import Users to import users
 
 == Changelog ==
@@ -35,3 +34,8 @@ This plugin was developed for Blogs@Baruch of Baruch College's Bernard L Schwart
 * Updated readme to reflect minimum requirements
 * Updated readme to contain proper instructions
 * Fixed typos
+
+= 1.1 =
+* Unhardcoded the text of emails
+* Added fields where the sender can modify the content of the email
+* Saves the customized email content for future use
