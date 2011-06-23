@@ -19,7 +19,7 @@ add_action( 'bp_init', 'ddiu_init_bp' );
 
 function ddiu2_add_management_pages() {
 	if (function_exists('add_management_page')) {
-		add_management_page('Import Users', 'Import Users', 8, __FILE__, 'ddiu2_management_page');
+		add_management_page( 'Import Users', 'Import Users', 8, __FILE__, 'ddiu2_management_page' );
 	}
 }
 
@@ -48,6 +48,12 @@ function ddiu2_management_page() {
 	$result = "";
 
 	if (isset($_POST['info_update'])) {
+		// Has the admin submitted AD data?
+		if ( isset( $_POST['ad_integration'] ) ) {
+			update_site_option( 'siu_ad_integration_settings', $_POST['ad_integration'] );
+			$ad_updated = true;
+		}
+	
 		$new_defaults = array(
 			'subject_new' => $_POST['email-subject-new'],
 			'subject_existing' => $_POST['email-subject-existing'],
@@ -57,7 +63,13 @@ function ddiu2_management_page() {
 		
 		update_option( 'ddui_email_defaults', $new_defaults );
 
-		?><div id="message" class="updated fade"><p><strong><?php
+		?><div id="message" class="updated fade">
+		
+		<?php if ( isset( $ad_updated ) ) : ?>
+			<p><strong>AD Integration settings updated!</strong></p>
+		<?php endif ?>
+		
+		<p><strong><?php
 
 		echo "Processing Complete - View Results Below";
 
@@ -260,9 +272,6 @@ Log into %s at %s', $blog_name, $blog_url, $blog_name, $admin_url )
 	
 	?>
 	
-		
-
-
 	<div style="padding: 0 0 15px 12px;">
 
 		<input type="hidden" name="delimiter" value="[|]" />
@@ -313,6 +322,29 @@ Log into %s at %s', $blog_name, $blog_url, $blog_name, $admin_url )
 		<textarea name="email-content-all" cols="75" rows="6"><?php echo $email_defaults['content_added'] ?></textarea><br /><br />
 	</div>
 
+	<?php /* Show a password field if necessary for ldap */ ?>
+	<?php global $AD_Integration_plugin; ?>
+	<?php if ( !empty( $AD_Integration_plugin ) && is_super_admin() ) : ?>
+		<?php $ad_integration_settings = get_site_option( 'siu_ad_integration_settings' ) ?>
+		
+		<h3>AD Integration</h3>
+		
+		<p>In order to get user info from Active Directory, we must have a valid AD login name and password. Information you enter below will be saved and used for all other blog administrators who use Simple Import Users.</p>
+		
+		<p class="description">Only Super Admins see this section.</p>
+		
+		<table class="form-table">
+			<tr>
+				<td><label for="ad_integration[username]">Username</label></td>
+				<td><input name="ad_integration[username]" type="text" value="<?php if ( !empty( $ad_integration_settings['username'] ) ) echo $ad_integration_settings['username'] ?>" /></td>
+			</tr>
+			
+			<tr>
+				<td><label for="ad_integration[password]">Password</label></td>
+				<td><input name="ad_integration[password]" type="password" value="<?php if ( !empty( $ad_integration_settings['password'] ) ) echo $ad_integration_settings['password'] ?>" /></td>
+			</tr>
+		</table>
+	<?php endif ?>	
 
 	<div class="submit">
 		<input type="submit" name="info_update" value="<?php _e('Import Users'); ?> &raquo;" />
@@ -343,6 +375,7 @@ function ddiu2_process_user( $ud ) {
 }
 
 function ddiu2_add_new_user( $user ) {
+	global $AD_Integration_plugin;
 	
 	// generate passwords if none were provided in the import
 	if ($user['password'] == '') {
@@ -354,15 +387,26 @@ function ddiu2_add_new_user( $user ) {
 	$uarray = split( '@', $user['email'] );
 	$user['username'] = sanitize_user( $uarray[0] );
 	
-	$args = array(
-		"user_login" => $user['username'],
-		"user_pass" => $user['password'],
-		"user_email" => $user['email']
-	);
-
-	// create user
-	$user_id = wp_insert_user( $args );
-
+	if ( !empty( $AD_Integration_plugin ) ) { 
+		$auto_create_user = get_site_option('AD_Integration_auto_create_user');
+		
+		require_once( dirname( __FILE__ ) . '/ad-integration.php' );
+		
+		if ( $auto_create_user ) {
+			// create user
+			$user_id = $AD_Integration_plugin->create_user( $user['username'] );
+		}	
+	} else {
+		$args = array(
+			"user_login" => $user['username'],
+			"user_pass" => $user['password'],
+			"user_email" => $user['email']
+		);
+	
+		// create user
+		$user_id = wp_insert_user( $args );
+	}
+	
 	if (!$user_id) {
 		$message = 'Could not create user <strong>' . $user['username'] . '</strong>';
 		$return = array( 'error' => $message );
