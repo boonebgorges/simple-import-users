@@ -49,7 +49,7 @@ if ( !method_exists( $AD_Integration_plugin, 'create_user' ) ) :
 					$userinfo = $this->_adldap->user_info($username, $this->_all_user_attributes);
 				}
 				
-				return $this->_create_user( $username, $userinfo );
+				return $this->_create_user( $username, $userinfo[0], false, false, false, true );
 			}
 		}
 	} else {		
@@ -85,7 +85,7 @@ if ( !method_exists( $AD_Integration_plugin, 'create_user' ) ) :
 					$userinfo = $this->_adldap->user_info($username, $this->_all_user_attributes);
 				}
 				
-				return $this->_create_user( $username, $userinfo );
+				return $this->_create_user( $username, $userinfo[0], false, false, false, true );
 			}
 		}
 	}
