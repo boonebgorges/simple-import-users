@@ -394,7 +394,7 @@ function ddiu2_add_new_user( $user ) {
 		
 		if ( $auto_create_user ) {
 			// create user
-			$user_id = $AD_Integration_plugin->create_user( $user['username'] );
+			$user_id = $AD_Integration_plugin->create_user( $user['email'] );
 		}	
 	} else {
 		$args = array(
