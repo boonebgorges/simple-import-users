@@ -384,6 +384,25 @@ function ddiu2_add_new_user( $user ) {
 		$password = $user['password'];
 	}
 	
+	// If this is MS, check against the banned email domain lists
+	if ( function_exists( 'is_email_address_unsafe' ) ) {
+		if ( is_email_address_unsafe( $user['email'] ) ) {
+			return array( 'error' => 'Forbidden email address <strong>' . $user['email'] . '</strong>' );
+		}
+	}
+	
+	// If available, check against the limited email domain list
+	$limited_email_domains = get_site_option( 'limited_email_domains' );
+	if ( is_array( $limited_email_domains ) && empty( $limited_email_domains ) == false ) {
+		$emaildomain = substr( $user['email'], 1 + strpos( $user['email'], '@' ) );
+		
+		if ( in_array( $emaildomain, $limited_email_domains ) == false ) {
+			var_dump( $emaildomain );
+			var_dump( $limited_email_domains );
+			return array( 'error' => 'Forbidden email address <strong>' . $user['email'] . '</strong>' );
+		}
+	}
+	
 	$uarray = split( '@', $user['email'] );
 	$user['username'] = sanitize_user( $uarray[0] );
 	
