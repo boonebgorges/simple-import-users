@@ -55,10 +55,11 @@ if ( !method_exists( $AD_Integration_plugin, 'create_user' ) ) :
 
 					// Get all userdata
 					$userinfo = $this->_adldap->user_info( $un[0], $this->_all_user_attributes );
+					//print_r( $un ); die();
 
 				}
 				
-				return $this->_create_user( $username, $userinfo[0], false, false, false, true );
+				return $this->_create_user( $un[0], $userinfo[0], false, false, false, true );
 			}
 		}
 	} else {		

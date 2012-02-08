@@ -19,7 +19,7 @@ add_action( 'bp_init', 'ddiu_init_bp' );
 
 function ddiu2_add_management_pages() {
 	if (function_exists('add_management_page')) {
-		add_management_page( 'Import Users', 'Import Users', 'manage_options', __FILE__, 'ddiu2_management_page' );
+		add_management_page( 'Import Users', 'Import Users', 8, __FILE__, 'ddiu2_management_page' );
 	}
 }
 
@@ -430,7 +430,10 @@ function ddiu2_add_new_user( $user ) {
 		$message = 'Could not create user <strong>' . $user['username'] . '</strong>';
 		$return = array( 'error' => $message );
 	} else {
-		$message = 'Username <strong>' . $user['username'] . '</strong> was successfully created.';
+		// Get the accurate user data (can be messed up during creation process)
+		$true_userdata = get_userdata( $user_id );
+	
+		$message = 'Username <strong>' . $true_userdata->user_login. '</strong> was successfully created.';
 		$return = array( 'create_success' => $message );
 		
 		$mailinfo = $args;
