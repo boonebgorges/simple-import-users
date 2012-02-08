@@ -19,7 +19,7 @@ add_action( 'bp_init', 'ddiu_init_bp' );
 
 function ddiu2_add_management_pages() {
 	if (function_exists('add_management_page')) {
-		add_management_page( 'Import Users', 'Import Users', 8, __FILE__, 'ddiu2_management_page' );
+		add_management_page( 'Import Users', 'Import Users', 'manage_options', __FILE__, 'ddiu2_management_page' );
 	}
 }
 
